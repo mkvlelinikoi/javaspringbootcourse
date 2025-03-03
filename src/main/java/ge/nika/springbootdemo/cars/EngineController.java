@@ -3,16 +3,12 @@ package ge.nika.springbootdemo.cars;
 import ge.nika.springbootdemo.cars.model.EngineDTO;
 import ge.nika.springbootdemo.cars.model.EngineRequest;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static ge.nika.springbootdemo.cars.security.AuthorizationConstants.ADMIN;
 import static ge.nika.springbootdemo.cars.security.AuthorizationConstants.USER_OR_ADMIN;
@@ -31,7 +27,7 @@ public class EngineController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize(USER_OR_ADMIN)
+    @PreAuthorize(ADMIN)
     EngineDTO getEngine(@PathVariable Long id){
         return engineService.getEngine(id);
     }

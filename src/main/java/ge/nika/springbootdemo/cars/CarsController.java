@@ -5,12 +5,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ge.nika.springbootdemo.cars.model.CarDTO;
 
 import static ge.nika.springbootdemo.cars.security.AuthorizationConstants.ADMIN;
 import static ge.nika.springbootdemo.cars.security.AuthorizationConstants.USER_OR_ADMIN;
+
 
 @RestController
 @RequestMapping("/cars")
@@ -44,7 +46,7 @@ public class CarsController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize(USER_OR_ADMIN)
+    @PreAuthorize(ADMIN)
     ResponseEntity<CarDTO> getCar(@PathVariable int id){
         CarDTO car = carsService.findCar(id);
         if(car != null){
