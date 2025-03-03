@@ -31,4 +31,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDTO> handleInvalidLogin(InvalidLoginException exception){
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDTO("Invalid-login", exception.getMessage()));
     }
+
+    @ExceptionHandler(MissingFieldException.class)
+    public ResponseEntity<ErrorDTO> handleMissingField(MissingFieldException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Invalid-Field", exception.getMessage()));
+    }
+
+    @ExceptionHandler(NegativePriceException.class)
+    public ResponseEntity<ErrorDTO> handleNegativePrice(NegativePriceException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Invalid-field", exception.getMessage()));
+    }
 }

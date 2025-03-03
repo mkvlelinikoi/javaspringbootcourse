@@ -9,3 +9,5 @@ spring:
     default-schema: cars
 jwt:
   secret-key: ${JAVA_COURSE_JWT_KEY}
+server:
+  port: 8888

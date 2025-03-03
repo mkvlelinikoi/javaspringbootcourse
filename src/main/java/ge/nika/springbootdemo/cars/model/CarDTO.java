@@ -10,6 +10,11 @@ public class CarDTO {
     private String model;
     private int year;
     private boolean driveable;
+    private Long priceInCents;
     private EngineDTO engine;
 
+    //added "Wait for pricing" for better UI
+    public String getPriceInCents(){
+        return (priceInCents != null && priceInCents == 0) ? "Waiting for price" : String.valueOf(priceInCents);
+    }
 }

@@ -24,6 +24,9 @@ public class AppUser {
     @Column
     private String password;
 
+    @Column(name = "balance_in_cents")
+    private Long balanceInCents;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",

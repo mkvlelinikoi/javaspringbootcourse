@@ -22,6 +22,7 @@ public class UserService {
         AppUser user = new AppUser();
         user.setUsername(request.getUsername());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setBalanceInCents(request.getBalanceInCents());
         user.setRoles(request.getRoleIds().stream()
                 .map(roleService::getRole)
                 .collect(Collectors.toSet()));

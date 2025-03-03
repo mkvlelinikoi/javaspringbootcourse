@@ -24,6 +24,9 @@ public class Car {
     @Column(name = "is_driveable")
     private boolean driveable;
 
+    @Column(name = "price_in_cents")
+    private Long priceInCents;
+
     @ManyToOne
     @JoinColumn(name = "engine_id")
     private Engine engine;

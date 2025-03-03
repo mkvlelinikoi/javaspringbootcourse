@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface CarRepository extends JpaRepository<Car, Long> {
 
-    @Query("SELECT NEW ge.nika.springbootdemo.cars.model.CarDTO(c.id, c.model, c.year, c.driveable, " +
+    @Query("SELECT NEW ge.nika.springbootdemo.cars.model.CarDTO(c.id, c.model, c.year, c.driveable, c.priceInCents, " +
             "NEW ge.nika.springbootdemo.cars.model.EngineDTO(e.id, e.horsePower, e.capacity)) " +
             "FROM Car c JOIN c.engine e")
     Page<CarDTO> findCars(Pageable pageable);
