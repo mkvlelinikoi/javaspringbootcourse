@@ -47,7 +47,7 @@ public class CarsController {
 
     @GetMapping("{id}")
     @PreAuthorize(ADMIN)
-    ResponseEntity<CarDTO> getCar(@PathVariable int id){
+    ResponseEntity<CarDTO> getCar(@PathVariable Long id){
         CarDTO car = carsService.findCar(id);
         if(car != null){
             return ResponseEntity.ok(car);
