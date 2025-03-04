@@ -1,8 +1,12 @@
 package ge.nika.springbootdemo.cars.persistence;
 
+import ge.nika.springbootdemo.cars.user.persistence.AppUser;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "car")
@@ -30,4 +34,7 @@ public class Car {
     @ManyToOne
     @JoinColumn(name = "engine_id")
     private Engine engine;
+
+    @ManyToMany(mappedBy = "cars",fetch = FetchType.LAZY)
+    private Set<AppUser> owners = new HashSet<>();
 }

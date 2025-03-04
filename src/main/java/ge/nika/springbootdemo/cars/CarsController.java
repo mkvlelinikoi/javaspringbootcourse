@@ -1,6 +1,7 @@
 package ge.nika.springbootdemo.cars;
 
 import ge.nika.springbootdemo.cars.model.CarRequest;
+import ge.nika.springbootdemo.cars.user.persistence.AppUserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -48,7 +49,7 @@ public class CarsController {
         carsService.updateCar(id, request);
     }
 
-    @PatchMapping("/setPrice/{id}")
+    @PatchMapping("/setPrice/{id}")//update price ONLY
     @PreAuthorize(ADMIN)
     void updateCarPrice(@PathVariable Long id, @RequestBody Map<String, Long> update){
         carsService.updateCarPrice(id, update);
@@ -63,10 +64,25 @@ public class CarsController {
     @GetMapping("{id}")
     @PreAuthorize(ADMIN) //get car by id (only admin can access)
     ResponseEntity<CarDTO> getCar(@PathVariable Long id){
-        CarDTO car = carsService.findCar(id);
-        if(car != null){
-            return ResponseEntity.ok(car);
-        }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(carsService.findCar(id));
+    }
+
+    //-------------USER-TRANSACTION-------------
+    @GetMapping("/buy/{id}")
+    @PreAuthorize(USER_OR_ADMIN)
+    void buyCar(@PathVariable Long id){
+        carsService.buyCar(id);
+    }
+
+    @GetMapping("/owned")
+    @PreAuthorize(USER_OR_ADMIN)
+    Page<CarDTO> getOwnedCars(@RequestParam int page, @RequestParam int pageSize){
+        return carsService.getOwnedCars(page, pageSize);
+    }
+
+    @DeleteMapping("/sell/{id}")
+    @PreAuthorize(USER_OR_ADMIN)
+    void sellCar(@PathVariable Long id){
+        carsService.sellCar(id);
     }
 }

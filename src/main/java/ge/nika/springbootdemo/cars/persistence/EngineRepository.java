@@ -14,4 +14,7 @@ public interface EngineRepository extends JpaRepository<Engine, Long> {
     @Query("SELECT NEW ge.nika.springbootdemo.cars.model.EngineDTO(e.id, e.horsePower, e.capacity)" +
         " FROM Engine e WHERE e.capacity = :capacity")
     Page<EngineDTO> findEngines(double capacity, Pageable pageable);
+
+    @Query("SELECT NEW ge.nika.springbootdemo.cars.model.EngineDTO(e.id, e.horsePower, e.capacity) FROM Engine e")
+    Page<EngineDTO> findEngines(Pageable pageable);
 }

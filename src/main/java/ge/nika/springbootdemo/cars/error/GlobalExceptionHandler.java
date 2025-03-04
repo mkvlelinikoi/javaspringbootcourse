@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidLoginException.class)
     public ResponseEntity<ErrorDTO> handleInvalidLogin(InvalidLoginException exception){
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDTO("Invalid-login", exception.getMessage()));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorDTO("Invalid-Login", exception.getMessage()));
     }
 
     @ExceptionHandler(MissingFieldException.class)
@@ -39,6 +39,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(NegativePriceException.class)
     public ResponseEntity<ErrorDTO> handleNegativePrice(NegativePriceException exception){
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Invalid-field", exception.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Invalid-Pricing", exception.getMessage()));
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ErrorDTO> handleUsernameNotFound(UsernameNotFoundException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO("Invalid-Username", exception.getMessage()));
+    }
+
+    @ExceptionHandler(InsufficientBalanceException.class)
+    public ResponseEntity<ErrorDTO> handleInsufficientBalance(InsufficientBalanceException exception){
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorDTO("Invalid-Transaction", exception.getMessage()));
     }
 }

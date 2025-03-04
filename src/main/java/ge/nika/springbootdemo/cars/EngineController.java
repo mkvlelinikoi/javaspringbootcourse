@@ -25,6 +25,11 @@ public class EngineController {
     Page<EngineDTO> getEngines(@RequestParam int page, @RequestParam int pageSize, @RequestParam double capacity) {
         return engineService.getEngines(page, pageSize, capacity);
     }
+    @GetMapping("/all")
+    @PreAuthorize(ADMIN)//additional endpoint for admin to get all engines
+    Page<EngineDTO> getEngines(@RequestParam int page, @RequestParam int pageSize) {
+        return engineService.getEngines(page, pageSize);
+    }
 
     @GetMapping("{id}")
     @PreAuthorize(ADMIN)

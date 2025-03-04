@@ -1,17 +1,18 @@
 package ge.nika.springbootdemo.cars;
 
-import ge.nika.springbootdemo.cars.error.MissingFieldException;
-import ge.nika.springbootdemo.cars.error.NegativePriceException;
-import ge.nika.springbootdemo.cars.error.NotFoundException;
+import ge.nika.springbootdemo.cars.error.*;
 import ge.nika.springbootdemo.cars.model.CarDTO;
 import ge.nika.springbootdemo.cars.model.CarRequest;
 import ge.nika.springbootdemo.cars.model.EngineDTO;
 import ge.nika.springbootdemo.cars.persistence.Car;
 import ge.nika.springbootdemo.cars.persistence.CarRepository;
+import ge.nika.springbootdemo.cars.user.persistence.AppUser;
+import ge.nika.springbootdemo.cars.user.persistence.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -22,6 +23,7 @@ public class CarsService {
 
     private final CarRepository carRepository;
     private final EngineService engineService;
+    private final AppUserRepository userRepository;
 
     public Page<CarDTO> getCars(int page, int pageSize){
         return carRepository.findCars(PageRequest.of(page, pageSize));
@@ -71,10 +73,54 @@ public class CarsService {
         carRepository.deleteById(id);
     }
 
-    public CarDTO findCar(long id){
-        Car car = carRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
+    public CarDTO findCar(Long id){
+        Car car = carRepository.findById(id).orElseThrow(() -> new NotFoundException("Car with id "+ id + " not found"));
         return mapCar(car);
     }
+
+    //TRANSACTIONAL
+    public void buyCar(Long id){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName(); //we get name of the user
+
+        AppUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found"));
+        Car car = carRepository.findById(id).orElseThrow(() -> new NotFoundException("Car with id " + id + " not found"));
+
+        if(user.getBalanceInCents() < car.getPriceInCents()){
+            throw new InsufficientBalanceException("Insufficient balance to buy " + car.getModel());
+        }
+
+        user.setBalanceInCents(user.getBalanceInCents() - car.getPriceInCents());
+        user.getCars().add(car);
+        car.getOwners().add(user);
+
+        userRepository.save(user);
+        carRepository.save(car);
+    }
+
+    public Page<CarDTO> getOwnedCars(int page, int pageSize){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+
+        Long id = userRepository.findByUsername(username).get().getId();//getting name so that i can get id
+
+        return carRepository.getOwnedCars(id, PageRequest.of(page, pageSize));
+    }
+
+    public void sellCar(Long id){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();//getting name of the current user
+
+        AppUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found"));
+        Car car = carRepository.findById(id).orElseThrow(() -> new NotFoundException("Car with id \" + id + \" not found"));
+
+        user.getCars().remove(car);
+        car.getOwners().remove(user);
+        user.setBalanceInCents(user.getBalanceInCents() + (long) (car.getPriceInCents() * 0.8));//returning back 80%
+
+        userRepository.save(user);
+        carRepository.save(car);
+    }
+    //-------------
 
     private CarDTO mapCar(Car car){
         return new CarDTO(car.getId(), car.getModel(), car.getYear(), car.isDriveable(), car.getPriceInCents(),

@@ -21,6 +21,9 @@ public class EngineService {
     public Page<EngineDTO> getEngines(int page, int pageSize, double capacity) {
         return engineRepository.findEngines(capacity, PageRequest.of(page, pageSize));
     }
+    public Page<EngineDTO> getEngines(int page, int pageSize) {
+        return engineRepository.findEngines(PageRequest.of(page, pageSize));
+    }
 
 
     public EngineDTO getEngine(long id){
@@ -31,7 +34,7 @@ public class EngineService {
     public void createEngine(EngineRequest engineRequest) {
         Engine engine=new Engine();
         engine.setCapacity(engineRequest.getCapacity());
-        engine.setHorsePower(engine.getHorsePower());
+        engine.setHorsePower(engineRequest.getHorsePower());
         engineRepository.save(engine);
     }
 

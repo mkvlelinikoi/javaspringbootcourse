@@ -9,3 +9,5 @@ databaseChangeLog:
       file: db/changelog/scripts/04-ADD-BALANCE-IN-CENTS-TO-USERS-TABLE.sql
   - include:
       file: db/changelog/scripts/05-ADD-PRICE-IN-CENTS-TO-CAR-TABLE.sql
+  - include:
+      file: db/changelog/scripts/06-CREATE-CAR-OWNER-TABLE.sql
