@@ -44,7 +44,7 @@ public class UserService {
         String username = authentication.getName(); //we got name of current user
 
         AppUser user = getUser(username);
-        UserDTO dto = new UserDTO(user.getUsername(), user.getBalanceInCents());
+        UserDTO dto = new UserDTO(user.getUsername(), user.getBalanceInCents(), user.getPurchaseCount());
 
         return ResponseEntity.ok(dto);
     }

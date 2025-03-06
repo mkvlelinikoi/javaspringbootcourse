@@ -30,6 +30,9 @@ public class AppUser {
     @Column(name = "balance_in_cents")
     private Long balanceInCents;
 
+    @Column(name = "purchase_count")
+    private int purchaseCount = 0;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",

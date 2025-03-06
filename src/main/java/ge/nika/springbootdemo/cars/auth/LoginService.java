@@ -35,7 +35,7 @@ public class LoginService {
         throw new InvalidLoginException("Invalid login");
     }
 
-    private LoginResponse generateLoginResponse(AppUser user){
+    public LoginResponse generateLoginResponse(AppUser user){
         try{
             JWTClaimsSet claims = new JWTClaimsSet.Builder()
                     .subject(user.getUsername())

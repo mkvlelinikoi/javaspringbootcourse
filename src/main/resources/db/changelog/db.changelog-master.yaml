@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db/changelog/scripts/05-ADD-PRICE-IN-CENTS-TO-CAR-TABLE.sql
   - include:
       file: db/changelog/scripts/06-CREATE-CAR-OWNER-TABLE.sql
+  - include:
+      file: db/changelog/scripts/07-ADD-PURCHASE-COUNT-TO-CAR-OWNER-TABLE.sql

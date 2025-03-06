@@ -32,6 +32,7 @@ dependencies {
 
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("org.mockito:mockito-core:5.16.0") //added mockito for better testing (Controllers Involved)
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

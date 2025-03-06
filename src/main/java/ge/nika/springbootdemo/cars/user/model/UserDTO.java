@@ -16,4 +16,5 @@ public class UserDTO {
 
     private String username;
     private Long balanceInCents;
+    private int purchaseCount;
 }

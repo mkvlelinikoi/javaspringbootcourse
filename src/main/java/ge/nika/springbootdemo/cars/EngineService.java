@@ -18,25 +18,27 @@ import java.util.stream.Collectors;
 public class EngineService {
     private final EngineRepository engineRepository;
 
+    //* <- means the method was tested
+
     public Page<EngineDTO> getEngines(int page, int pageSize, double capacity) {
         return engineRepository.findEngines(capacity, PageRequest.of(page, pageSize));
-    }
+    }//*
     public Page<EngineDTO> getEngines(int page, int pageSize) {
         return engineRepository.findEngines(PageRequest.of(page, pageSize));
-    }
+    }//*
 
 
-    public EngineDTO getEngine(long id){
+    public EngineDTO getEngine(Long id){
         Engine engine=engineRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
         return mapEngine(engine);
-    }
+    }//*
 
     public void createEngine(EngineRequest engineRequest) {
         Engine engine=new Engine();
         engine.setCapacity(engineRequest.getCapacity());
         engine.setHorsePower(engineRequest.getHorsePower());
         engineRepository.save(engine);
-    }
+    }//*
 
     public EngineDTO updateEngine(Long id, EngineRequest request){
         Engine engine = engineRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
@@ -46,15 +48,15 @@ public class EngineService {
         engineRepository.save(engine);
 
         return mapEngine(engine);
-    }
+    }//*
 
     public void deleteEngine(Long id){
         engineRepository.deleteById(id);
-    }
+    }//*
 
     public Engine findEngine(Long id){
         return engineRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
-    }
+    }//*
 
 
 

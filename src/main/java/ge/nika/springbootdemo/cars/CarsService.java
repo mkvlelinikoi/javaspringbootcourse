@@ -25,10 +25,11 @@ public class CarsService {
     private final EngineService engineService;
     private final AppUserRepository userRepository;
 
+    //* <- tested
+
     public Page<CarDTO> getCars(int page, int pageSize){
         return carRepository.findCars(PageRequest.of(page, pageSize));
-
-    }
+    }//*
 
     public void addCar(CarRequest request){
         Car car = new Car();
@@ -51,7 +52,7 @@ public class CarsService {
             car.setEngine(engineService.findEngine(request.getEngineId()));
         }
         carRepository.save(car);
-    }
+    }//*
 
     //method to update Only car price
     public void updateCarPrice(Long id, Map<String, Long> update){
@@ -67,16 +68,16 @@ public class CarsService {
 
         car.setPriceInCents(newPrice);
         carRepository.save(car);
-    }
+    }//*
 
     public void deleteCar(Long id){
         carRepository.deleteById(id);
-    }
+    }//*
 
     public CarDTO findCar(Long id){
         Car car = carRepository.findById(id).orElseThrow(() -> new NotFoundException("Car with id "+ id + " not found"));
         return mapCar(car);
-    }
+    }//*
 
     //TRANSACTIONAL
     public void buyCar(Long id){
@@ -92,6 +93,7 @@ public class CarsService {
 
         user.setBalanceInCents(user.getBalanceInCents() - car.getPriceInCents());
         user.getCars().add(car);
+        user.setPurchaseCount(user.getPurchaseCount() + 1);
         car.getOwners().add(user);
 
         userRepository.save(user);
@@ -111,9 +113,10 @@ public class CarsService {
 
         AppUser user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found"));
-        Car car = carRepository.findById(id).orElseThrow(() -> new NotFoundException("Car with id \" + id + \" not found"));
+        Car car = carRepository.findById(id).orElseThrow(() -> new NotFoundException("Car with id " + id + " not found"));
 
         user.getCars().remove(car);
+        user.setPurchaseCount(user.getPurchaseCount() - 1);
         car.getOwners().remove(user);
         user.setBalanceInCents(user.getBalanceInCents() + (long) (car.getPriceInCents() * 0.8));//returning back 80%
 

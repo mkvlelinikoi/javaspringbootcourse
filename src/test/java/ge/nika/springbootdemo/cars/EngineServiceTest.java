@@ -42,8 +42,43 @@ public class EngineServiceTest {
 
         //Then
         assertEquals(1, result.getContent().size());
+        assertEquals(1L, result.getContent().getFirst().getId());
         assertEquals(2.0, result.getContent().getFirst().getCapacity());
+        assertEquals(150, result.getContent().getFirst().getHorsePower());
         verify(engineRepository).findEngines(2.0, pageRequest);
+    }
+
+    @Test
+    void testSecondGetEngines(){
+        //Given
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<EngineDTO> enginePage =new PageImpl<>(List.of(new EngineDTO(1L, 150, 2.0)));
+        when(engineRepository.findEngines(pageRequest)).thenReturn(enginePage);
+
+        //When
+        Page<EngineDTO> result = engineService.getEngines(0, 10);
+
+        //Then
+        assertEquals(1, result.getContent().size());
+        assertEquals(1L, result.getContent().getFirst().getId());
+        assertEquals(2.0, result.getContent().getFirst().getCapacity());
+        assertEquals(150, result.getContent().getFirst().getHorsePower());
+        verify(engineRepository).findEngines(pageRequest);
+    }
+
+    @Test
+    void testGetEngine(){
+        //Given
+        when(engineRepository.findById(1L)).thenReturn(java.util.Optional.of(buildEngine()));
+
+        //When
+        EngineDTO result = engineService.getEngine(1L);
+
+        //Then
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
+        assertEquals(150, result.getHorsePower());
+        assertEquals(2.0, result.getCapacity());
     }
 
     @Test
