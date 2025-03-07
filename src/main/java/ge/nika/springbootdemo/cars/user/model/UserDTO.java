@@ -1,14 +1,7 @@
 package ge.nika.springbootdemo.cars.user.model;
 
-import ge.nika.springbootdemo.cars.model.CarDTO;
-import ge.nika.springbootdemo.cars.persistence.Car;
-import ge.nika.springbootdemo.cars.user.persistence.Role;
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -16,5 +9,17 @@ public class UserDTO {
 
     private String username;
     private Long balanceInCents;
-    private int purchaseCount;
+    private String balanceInDolars;
+    private int numberOfOwnedCars;
+
+
+    public UserDTO(String username, Long balanceInCents, int numberOfOwnedCars){
+        this.username = username;
+        this.balanceInCents = balanceInCents;
+        this.numberOfOwnedCars = numberOfOwnedCars;
+    }//wrote another constructor so that i can show balance in dollars
+
+    public void setBalanceInDollars(){
+        balanceInDolars = (double)(balanceInCents / 100) + "$";
+    }
 }

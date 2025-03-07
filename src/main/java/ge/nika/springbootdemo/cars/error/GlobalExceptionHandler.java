@@ -51,4 +51,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDTO> handleInsufficientBalance(InsufficientBalanceException exception){
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorDTO("Invalid-Transaction", exception.getMessage()));
     }
+
+    @ExceptionHandler(InvalidCarElementException.class)
+    public ResponseEntity<ErrorDTO> handleInvalidCarElement(InvalidCarElementException exception){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO("Invalid-Car", exception.getMessage()));
+    }
 }

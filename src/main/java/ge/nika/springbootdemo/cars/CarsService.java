@@ -93,7 +93,7 @@ public class CarsService {
 
         user.setBalanceInCents(user.getBalanceInCents() - car.getPriceInCents());
         user.getCars().add(car);
-        user.setPurchaseCount(user.getPurchaseCount() + 1);
+        user.setNumberOfOwnedCars(user.getNumberOfOwnedCars() + 1);
         car.getOwners().add(user);
 
         userRepository.save(user);
@@ -115,8 +115,12 @@ public class CarsService {
                 .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found"));
         Car car = carRepository.findById(id).orElseThrow(() -> new NotFoundException("Car with id " + id + " not found"));
 
-        user.getCars().remove(car);
-        user.setPurchaseCount(user.getPurchaseCount() - 1);
+        if(user.getCars().contains(car)){
+            user.getCars().remove(car);
+        }else {
+            throw new InvalidCarElementException("User doesn't own a car with id " + id);
+        }
+        user.setNumberOfOwnedCars(user.getNumberOfOwnedCars() - 1);
         car.getOwners().remove(user);
         user.setBalanceInCents(user.getBalanceInCents() + (long) (car.getPriceInCents() * 0.8));//returning back 80%
 
