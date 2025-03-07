@@ -55,7 +55,7 @@ public class CarServiceTest {
     void testGetCars(){
         //Given
         PageRequest pageRequest = PageRequest.of(0, 10);
-        CarDTO carDTO = new CarDTO(1L, "Vaz", 1975, true, 2000L,
+        CarDTO carDTO = new CarDTO(1L, "Vaz", 1975, true, 2000L, "",
                 new EngineDTO(1000L, 150, 2.0));
         Page<CarDTO> cars = new PageImpl<>(List.of(carDTO));
         when(carRepository.findCars(pageRequest)).thenReturn(cars);
@@ -138,6 +138,7 @@ public class CarServiceTest {
         Long id = 1L;
         Car car = buildCar();
         CarDTO carDTO = new CarDTO(car.getId(), car.getModel(), car.getYear(), car.isDriveable(), car.getPriceInCents(),
+                car.getCarImage(),
                 new EngineDTO(car.getEngine().getId(), car.getEngine().getHorsePower(), car.getEngine().getCapacity()));
         when(carRepository.findById(id)).thenReturn(Optional.of(buildCar()));
 
@@ -213,7 +214,7 @@ public class CarServiceTest {
     void testGetOwnedCars(){
         String username = "user";
         PageRequest request   = PageRequest.of(0, 10);
-        CarDTO carDTO = new CarDTO(1L, "Vaz", 1975, true, 2000L,
+        CarDTO carDTO = new CarDTO(1L, "Vaz", 1975, true, 2000L, "",
                 new EngineDTO(1000L, 150, 2.0));
         Page<CarDTO> cars = new PageImpl<>(List.of(carDTO));
         AppUser user = buildUser();

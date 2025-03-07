@@ -56,4 +56,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDTO> handleInvalidCarElement(InvalidCarElementException exception){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorDTO("Invalid-Car", exception.getMessage()));
     }
+
+    @ExceptionHandler(InvalidLinkException.class)
+    public ResponseEntity<ErrorDTO> handleInvalidLink(InvalidLinkException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Invalid-Link", exception.getMessage()));
+    }
 }

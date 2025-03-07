@@ -31,6 +31,12 @@ public class CarsService {
         return carRepository.findCars(PageRequest.of(page, pageSize));
     }//*
 
+    public String getCarImage(Long id){//return the image link of a chosen car
+        Car car = carRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
+
+        return car.getCarImage();
+    }
+
     public void addCar(CarRequest request){
         Car car = new Car();
         car.setModel(request.getModel());
@@ -40,7 +46,7 @@ public class CarsService {
         car.setEngine(engineService.findEngine((request.getEngineId())));
 
         carRepository.save(car);
-    }
+    }//*
 
     public void updateCar(Long id, CarRequest request){
         Car car = carRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
@@ -69,6 +75,21 @@ public class CarsService {
         car.setPriceInCents(newPrice);
         carRepository.save(car);
     }//*
+    //method to update only car Image (URL)
+    public void updateCarImage(Long id, Map<String, String> update){
+        if(!update.containsKey("carImage")){
+            throw new MissingFieldException("Missing Required Field: CarImage");
+        }
+
+        String newLink = update.get("carImage");
+        if (newLink == null || newLink.isEmpty()) {//checks if the given String is valid
+            throw new InvalidLinkException("Enter a proper Link");
+        }
+        Car car = carRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
+
+        car.setCarImage(newLink);
+        carRepository.save(car);
+    }
 
     public void deleteCar(Long id){
         carRepository.deleteById(id);
@@ -98,7 +119,7 @@ public class CarsService {
 
         userRepository.save(user);
         carRepository.save(car);
-    }
+    }//*
 
     public Page<CarDTO> getOwnedCars(int page, int pageSize){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -106,7 +127,7 @@ public class CarsService {
         Long id = userRepository.findByUsername(username).get().getId();//getting name so that i can get id
 
         return carRepository.getOwnedCars(id, PageRequest.of(page, pageSize));
-    }
+    }//*
 
     public void sellCar(Long id){
         String username = SecurityContextHolder.getContext().getAuthentication().getName();//getting name of the current user
@@ -126,11 +147,11 @@ public class CarsService {
 
         userRepository.save(user);
         carRepository.save(car);
-    }
+    }//*
     //-------------
 
     private CarDTO mapCar(Car car){
-        return new CarDTO(car.getId(), car.getModel(), car.getYear(), car.isDriveable(), car.getPriceInCents(),
+        return new CarDTO(car.getId(), car.getModel(), car.getYear(), car.isDriveable(), car.getPriceInCents(), car.getCarImage(),
                 new EngineDTO(
                         car.getEngine().getId(),
                         car.getEngine().getHorsePower(),

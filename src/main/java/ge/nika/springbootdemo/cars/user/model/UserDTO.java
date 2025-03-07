@@ -9,7 +9,7 @@ public class UserDTO {
 
     private String username;
     private Long balanceInCents;
-    private String balanceInDolars;
+    private String balanceInDollars;
     private int numberOfOwnedCars;
 
 
@@ -20,6 +20,6 @@ public class UserDTO {
     }//wrote another constructor so that i can show balance in dollars
 
     public void setBalanceInDollars(){
-        balanceInDolars = (double)(balanceInCents / 100) + "$";
+        balanceInDollars = (double)(balanceInCents / 100) + "$";
     }
 }

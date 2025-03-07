@@ -30,6 +30,12 @@ public class CarsController {
         return carsService.getCars(page, pageSize);
     }
 
+    @GetMapping("/{id}/image")
+    @PreAuthorize(USER_OR_ADMIN)
+    String getCarImage(@PathVariable Long id){
+        return carsService.getCarImage(id);
+    }
+
     @PostMapping
     @PreAuthorize(ADMIN) //add a new car (only admin can access)
     void addCar(@RequestBody @Valid CarRequest request){
@@ -84,5 +90,12 @@ public class CarsController {
     @PreAuthorize(USER_OR_ADMIN)
     void sellCar(@PathVariable Long id){
         carsService.sellCar(id);
+    }
+
+    //----------Update Car Image------------
+    @PatchMapping("/updateImage/{id}")
+    @PreAuthorize(ADMIN)
+    void updateCarImage(@PathVariable Long id,@RequestBody Map<String, String> update){
+        carsService.updateCarImage(id, update);
     }
 }

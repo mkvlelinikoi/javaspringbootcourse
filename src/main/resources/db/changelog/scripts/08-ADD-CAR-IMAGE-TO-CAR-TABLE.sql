@@ -1,0 +1,1 @@
+ALTER TABLE cars.car ADD COLUMN car_image VARCHAR(255) NOT NULL DEFAULT 'Image Not Available';

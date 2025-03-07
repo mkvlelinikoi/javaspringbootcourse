@@ -31,6 +31,9 @@ public class Car {
     @Column(name = "price_in_cents")
     private Long priceInCents;
 
+    @Column(name = "car_image")
+    private String carImage;
+
     @ManyToOne
     @JoinColumn(name = "engine_id")
     private Engine engine;
