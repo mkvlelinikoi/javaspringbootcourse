@@ -61,4 +61,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDTO> handleInvalidLink(InvalidLinkException exception){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Invalid-Link", exception.getMessage()));
     }
+
+    @ExceptionHandler(InvalidAnswerException.class)
+    public ResponseEntity<ErrorDTO> handleInvalidAnswer(InvalidAnswerException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Invalid-Answer", exception.getMessage()));
+    }
 }

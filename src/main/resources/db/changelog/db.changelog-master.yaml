@@ -13,3 +13,5 @@ databaseChangeLog:
       file: db/changelog/scripts/06-CREATE-CAR-OWNER-TABLE.sql
   - include:
       file: db/changelog/scripts/08-ADD-CAR-IMAGE-TO-CAR-TABLE.sql
+  - include:
+      file: db/changelog/scripts/09-ADD-GAME-TABLE.sql
