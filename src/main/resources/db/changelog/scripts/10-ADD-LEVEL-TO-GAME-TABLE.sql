@@ -1,0 +1,3 @@
+ALTER TABLE cars.question
+ADD COLUMN level VARCHAR(50)
+DEFAULT 'Easy' NOT NULL;

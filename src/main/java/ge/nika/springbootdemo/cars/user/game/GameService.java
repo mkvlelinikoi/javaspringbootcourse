@@ -1,9 +1,6 @@
 package ge.nika.springbootdemo.cars.user.game;
 
-import ge.nika.springbootdemo.cars.error.InvalidAnswerException;
-import ge.nika.springbootdemo.cars.error.MissingFieldException;
-import ge.nika.springbootdemo.cars.error.NotFoundException;
-import ge.nika.springbootdemo.cars.error.UsernameNotFoundException;
+import ge.nika.springbootdemo.cars.error.*;
 import ge.nika.springbootdemo.cars.user.game.model.QuestionDTO;
 import ge.nika.springbootdemo.cars.user.game.model.QuestionRequest;
 import ge.nika.springbootdemo.cars.user.game.persistence.Question;
@@ -16,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
@@ -44,8 +42,15 @@ public class GameService {
     }
 
     //adding a question
-    public void addQuestion(QuestionRequest request){
+    public void addQuestion(QuestionRequest request) {
+        if (!request.getLevel().equals("Easy") &&
+                !request.getLevel().equals("Medium") &&
+                !request.getLevel().equals("Hard")) {
+            throw new InvalidGameLevelException("Enter game level either: Easy, Medium, or Hard");
+        }
+
         Question question = new Question();
+        question.setLevel(request.getLevel());
         question.setQuestion(request.getQuestion());
         question.setAnswer(request.getAnswer());
 
@@ -53,7 +58,11 @@ public class GameService {
     }
 
     //answerign to question
-    public void answerToQuestion(Map<String, Double> answer){
+    public Map<String, Long> answerToQuestion(Map<String, Double> answer){
+        if(currentQuestionId == null){//checking if user used get method first to sset currentQuestionId
+            throw new CurrentQuestionNullException("Use get method first and then answer the given question");
+        }
+
         if (!answer.containsKey("answer")) {
             throw new MissingFieldException("Missing Required Field: answer");
         }
@@ -63,8 +72,6 @@ public class GameService {
         Optional<Question> optionalQuestion = questionRepository.findById(currentQuestionId);
         Question question = optionalQuestion.orElseThrow(() -> new NotFoundException("Question not found"));
 
-        System.out.println(question.getAnswer());
-
         if (Math.abs(userAnswer - question.getAnswer()) > TOLERANCE) {//used tolerance so double values can be evaluated
             throw new InvalidAnswerException("Incorrect answer");
         }
@@ -72,12 +79,32 @@ public class GameService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();//getting authorized users username
         AppUser user = userRepository.findByUsername(username)//getting user
                 .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " not found"));
-        user.setBalanceInCents(user.getBalanceInCents() + 1000);
+
+        Long earned = 0L;
+        switch (question.getLevel()){
+            case "Easy":
+                user.setBalanceInCents(user.getBalanceInCents() + 1000);
+                earned = 1000L;
+                break;
+            case "Medium":
+                user.setBalanceInCents(user.getBalanceInCents() + 5000);
+                earned = 5000L;
+                break;
+            case "Hard":
+                user.setBalanceInCents(user.getBalanceInCents() + 10000);
+                earned = 10000L;
+                break;
+        }
+        Map<String, Long> response = new HashMap<>();
+        response.put("You earned:", earned);
+
         userRepository.save(user);
+
+        return response;
     }
 
    //map car
    private QuestionDTO mapQuestion(Question question){
-       return new QuestionDTO(question.getQuestion());
+       return new QuestionDTO(question.getLevel(), question.getQuestion());
    }
 }

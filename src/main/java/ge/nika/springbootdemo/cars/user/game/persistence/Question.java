@@ -20,4 +20,7 @@ public class Question {
 
     @Column(name = "answer")
     private Double answer;
+
+    @Column(name = "level")
+    private String level;
 }

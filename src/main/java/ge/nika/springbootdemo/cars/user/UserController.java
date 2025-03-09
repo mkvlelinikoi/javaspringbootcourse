@@ -55,7 +55,7 @@ public class UserController {
 
     @PatchMapping("/earnMoney")
     @PreAuthorize(USER_OR_ADMIN)
-    public void answerToQuestion(@RequestBody Map<String, Double> answer){
-        gameService.answerToQuestion(answer);
+    public Map<String, Long> answerToQuestion(@RequestBody Map<String, Double> answer){
+        return gameService.answerToQuestion(answer);
     }
 }

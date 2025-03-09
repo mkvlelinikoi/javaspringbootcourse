@@ -10,6 +10,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class QuestionRequest {
     @NotBlank
+    private String level;
+    @NotBlank
     @Size(max = 100)
     private String question;
     @NotNull

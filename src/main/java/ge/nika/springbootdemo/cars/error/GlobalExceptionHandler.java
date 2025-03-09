@@ -66,4 +66,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDTO> handleInvalidAnswer(InvalidAnswerException exception){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Invalid-Answer", exception.getMessage()));
     }
+
+    @ExceptionHandler(InvalidGameLevelException.class)
+    public ResponseEntity<ErrorDTO> handleInvalidGameLevel(InvalidGameLevelException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Invalid-Level", exception.getMessage()));
+    }
+
+    @ExceptionHandler(CurrentQuestionNullException.class)
+    public ResponseEntity<ErrorDTO> handleCurrentQuestionNull(CurrentQuestionNullException exception){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorDTO("Invalid-Answering", exception.getMessage()));
+    }
 }
