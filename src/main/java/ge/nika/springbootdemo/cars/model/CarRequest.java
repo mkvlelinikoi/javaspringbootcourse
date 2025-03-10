@@ -17,4 +17,5 @@ public class CarRequest {
     private Long priceInCents;
     @Positive
     private Long engineId;
+    private String imageLink;
 }

@@ -33,6 +33,10 @@ public class CarDTO {
     }
 
     public void setBalanceInDollars(){
-        priceInDollars = (double)(priceInCents / 100) + "$";
+        if (priceInCents != null && priceInCents == 0){
+            priceInDollars = "Waiting for price in dollars"; //if price is uknown
+        }else {
+            priceInDollars = (double) (priceInCents / 100) + "$";
+        }
     }
 }

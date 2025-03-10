@@ -44,6 +44,11 @@ public class CarsService {
         car.setDriveable(request.isDriveable());
         car.setPriceInCents(request.getPriceInCents());
         car.setEngine(engineService.findEngine((request.getEngineId())));
+        if(request.getImageLink() == null || request.getImageLink().isEmpty()){
+            car.setCarImage("Image Not Available");
+        }else{
+            car.setCarImage(request.getImageLink());
+        }
 
         carRepository.save(car);
     }//*
