@@ -1,5 +1,6 @@
 package ge.nika.springbootdemo.cars;
 
+import ge.nika.springbootdemo.cars.amazon.BucketService;
 import ge.nika.springbootdemo.cars.error.*;
 import ge.nika.springbootdemo.cars.model.CarDTO;
 import ge.nika.springbootdemo.cars.model.CarRequest;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -24,6 +26,7 @@ public class CarsService {
     private final CarRepository carRepository;
     private final EngineService engineService;
     private final AppUserRepository userRepository;
+    private final BucketService bucketService;
 
     //* <- tested
 
@@ -34,7 +37,7 @@ public class CarsService {
     public String getCarImage(Long id){//return the image link of a chosen car
         Car car = carRepository.findById(id).orElseThrow(() -> buildNotFoundException(id));
 
-        return car.getCarImage();
+        return bucketService.getImageURLFromBucket(car.getModel() + ".jpg");
     }
 
     public void addCar(CarRequest request){
@@ -94,6 +97,10 @@ public class CarsService {
 
         car.setCarImage(newLink);
         carRepository.save(car);
+    }
+
+    public String uploadCarImage(MultipartFile file){
+        return bucketService.putImageIntoBucket(file);
     }
 
     public void deleteCar(Long id){

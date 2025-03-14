@@ -9,5 +9,13 @@ spring:
     default-schema: cars
 jwt:
   secret-key: ${JAVA_COURSE_JWT_KEY}
+cloud:
+  aws:
+    credentials:
+      access-key: AKIAZQ3DQ55YWVE4R253
+      secret-key: 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
+    s3:
+      bucket-name: java-course-final-project
+      folder-name: CarImagesForFinalProject
 server:
   port: 8888

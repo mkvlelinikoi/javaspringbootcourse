@@ -29,10 +29,13 @@ dependencies {
 	implementation("com.nimbusds:nimbus-jose-jwt:10.0.1")
 	implementation("org.postgresql:postgresql:42.7.4")
 	implementation("org.liquibase:liquibase-core:4.30.0")
+	implementation("com.amazonaws:aws-java-sdk-s3:1.12.782")
+	implementation ("software.amazon.awssdk:s3:2.20.112")
 
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.mockito:mockito-core:5.16.0") //added mockito for better testing (Controllers Involved)
+	testImplementation("software.amazon.awssdk:s3:2.30.37")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

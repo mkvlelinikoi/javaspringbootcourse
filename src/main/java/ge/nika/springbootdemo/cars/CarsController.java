@@ -5,11 +5,13 @@ import ge.nika.springbootdemo.cars.user.persistence.AppUserRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import ge.nika.springbootdemo.cars.model.CarDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Map;
 
@@ -97,5 +99,11 @@ public class CarsController {
     @PreAuthorize(ADMIN)
     void updateCarImage(@PathVariable Long id,@RequestBody Map<String, String> update){
         carsService.updateCarImage(id, update);
+    }
+
+    @PostMapping("/{id}/uploadImage")
+    @PreAuthorize(ADMIN)//may have some problems //TODO: ADVANCE FUNCTIONALITY
+    ResponseEntity<String> uploadCarImage(@PathVariable Long id, @RequestParam(value = "file")MultipartFile file){
+        return new ResponseEntity<>(carsService.uploadCarImage(file), HttpStatus.OK);
     }
 }
