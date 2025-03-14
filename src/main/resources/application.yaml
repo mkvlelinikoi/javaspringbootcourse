@@ -12,8 +12,8 @@ jwt:
 cloud:
   aws:
     credentials:
-      access-key: AKIAZQ3DQ55YWVE4R253
-      secret-key: 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
+      access-key: ${AWS_S3_ACCESS_KEY}
+      secret-key: ${AWS_S3_SECRET_KEY}
     s3:
       bucket-name: java-course-final-project
       folder-name: CarImagesForFinalProject
